@@ -23,8 +23,10 @@ This application provides a way to balance between profit tracking and controlli
 
 ## Screenshots
 
-![](home.png) ![](history.png) ![](calendar.png)
-![](no-trx.png)
+<p>
+  <img src="/home.png" height="96" width="54" />
+  <img src="/history.png" height="96" width="54" /> 
+</p>
 
 ## Motivation
 
