@@ -8,19 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.civil.CivilCalendar
 import com.aminography.primedatepicker.picker.PrimeDatePicker
-import com.aminography.primedatepicker.picker.theme.DarkThemeFactory
+import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback
+import com.aminography.primedatepicker.picker.theme.LightThemeFactory
 import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.adapter.HistoryAdapter
 import com.supernova.bkashmanager.databinding.FragmentHistoryBinding
-import com.supernova.bkashmanager.dialog.CustomPicker
 import com.supernova.bkashmanager.listener.DateChangeListener
 import com.supernova.bkashmanager.listener.FragmentInteractionListener
+import org.joda.time.DateTime
+import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HistoryFragment : Fragment(), DateChangeListener {
+class HistoryFragment : Fragment(), DateChangeListener, SingleDayPickCallback {
 
     private lateinit var binding: FragmentHistoryBinding
 
@@ -80,7 +83,7 @@ class HistoryFragment : Fragment(), DateChangeListener {
     private fun initialize() {
 
         setupRecyclerView()
-        onDateChanged("")
+        fetchHistoriesByDate("")
     }
 
     private fun setupRecyclerView() {
@@ -98,14 +101,18 @@ class HistoryFragment : Fragment(), DateChangeListener {
 //            // TODO
 //        }
 
-        val themeFactory = DarkThemeFactory()
-        val today = CivilCalendar()
+        if (activity != null) {
 
-        val datePicker = PrimeDatePicker.bottomSheetWith(today)
-            .applyTheme(themeFactory)                    // Optional
-            .build()
+            val themeFactory = LightThemeFactory()
+            val today = CivilCalendar()
 
-        datePicker.show(supportFragmentManager, "SOME_TAG")
+            val datePicker = PrimeDatePicker.dialogWith(today)
+                    .pickSingleDay(this)
+                    .applyTheme(themeFactory)
+                    .build()
+
+            datePicker.show(activity!!.supportFragmentManager, "date_picker")
+        }
 
 //        val dialog = CustomPicker()
 //
@@ -119,14 +126,27 @@ class HistoryFragment : Fragment(), DateChangeListener {
 //        }
     }
 
-    override fun onDateChanged(date: String) {
-
-        this.date = date
+    private fun fetchHistoriesByDate(date: String) {
 
         listener?.getHistories(date)?.observe(viewLifecycleOwner, {
 
             adapter?.histories = it
             adapter?.notifyDataSetChanged()
         })
+    }
+
+    override fun onDateChanged(date: String) {
+
+        this.date = date
+    }
+
+    override fun onSingleDayPicked(singleDay: PrimeCalendar?) {
+
+        if (singleDay != null) {
+
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            this.date = format.format(singleDay.getTime())
+            fetchHistoriesByDate(date)
+        }
     }
 }
