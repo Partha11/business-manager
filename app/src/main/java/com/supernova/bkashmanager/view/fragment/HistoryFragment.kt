@@ -16,14 +16,12 @@ import com.aminography.primedatepicker.picker.theme.LightThemeFactory
 import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.adapter.HistoryAdapter
 import com.supernova.bkashmanager.databinding.FragmentHistoryBinding
-import com.supernova.bkashmanager.listener.DateChangeListener
 import com.supernova.bkashmanager.listener.FragmentInteractionListener
-import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HistoryFragment : Fragment(), DateChangeListener, SingleDayPickCallback {
+class HistoryFragment : Fragment(), SingleDayPickCallback {
 
     private lateinit var binding: FragmentHistoryBinding
 
@@ -133,11 +131,6 @@ class HistoryFragment : Fragment(), DateChangeListener, SingleDayPickCallback {
             adapter?.histories = it
             adapter?.notifyDataSetChanged()
         })
-    }
-
-    override fun onDateChanged(date: String) {
-
-        this.date = date
     }
 
     override fun onSingleDayPicked(singleDay: PrimeCalendar?) {
