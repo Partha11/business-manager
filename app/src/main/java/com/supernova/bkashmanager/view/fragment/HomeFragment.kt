@@ -1,6 +1,7 @@
 package com.supernova.bkashmanager.view.fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +15,11 @@ import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.adapter.UserAdapter
 import com.supernova.bkashmanager.databinding.FragmentHomeBinding
 import com.supernova.bkashmanager.listener.FragmentInteractionListener
-import com.supernova.bkashmanager.listener.UpdateListener
+import com.supernova.bkashmanager.util.Constants
+import com.supernova.bkashmanager.util.SharedPrefs
 import com.supernova.bkashmanager.util.Utils
-import com.supernova.bkashmanager.view.activity.DashboardActivity
 
-class HomeFragment : Fragment(), UpdateListener {
+class HomeFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var binding: FragmentHomeBinding
     private var listener: FragmentInteractionListener? = null
@@ -29,7 +30,7 @@ class HomeFragment : Fragment(), UpdateListener {
         fun getInstance() = HomeFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         this.binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
@@ -50,18 +51,19 @@ class HomeFragment : Fragment(), UpdateListener {
             listener = context
         }
 
+        SharedPrefs(context).prefs.registerOnSharedPreferenceChangeListener(this)
+
         (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     private fun initialize() {
 
         binding.wishText.text = Utils.getGreetings()
-        binding.managerName.text = listener?.getManagerName()
-        binding.initialBalance.text = context?.getString(R.string.initial_points, listener?.getInitialPoints())
-        binding.currentBalance.text = context?.getString(R.string.current_points, listener?.getCurrentPoints())
         binding.usersTitle.text = context?.getString(R.string.users, 1)
 
-        DashboardActivity.updateListener = this
+        updateName(listener?.getManagerName())
+        updateInitialBalance(listener?.getInitialPoints() ?: 0)
+        updateCurrentBalance(listener?.getCurrentPoints() ?: 0)
 
         setupRecyclerView()
     }
@@ -82,8 +84,28 @@ class HomeFragment : Fragment(), UpdateListener {
         })
     }
 
-    override fun onNameUpdated(name: String) {
+    private fun updateName(name: String?) {
 
         binding.managerName.text = name
+    }
+
+    private fun updateInitialBalance(balance: Int) {
+
+        binding.initialBalance.text = context?.getString(R.string.initial_points, balance)
+    }
+
+    private fun updateCurrentBalance(balance: Int) {
+
+        binding.currentBalance.text = context?.getString(R.string.current_points, balance)
+    }
+
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, key: String?) {
+
+        when (key) {
+
+            Constants.PREF_ADMIN_NAME -> updateName(listener?.getManagerName())
+            Constants.PREF_INITIAL_POINTS -> updateInitialBalance(listener?.getInitialPoints() ?: 0)
+            Constants.PREF_CURRENT_POINTS -> updateCurrentBalance(listener?.getCurrentPoints() ?: 0)
+        }
     }
 }

@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="default_primary">#ED2352</color>
+    <color name="default_primary">#FF595E</color>
     <color name="active_green">#23911A</color>
     <color name="blocked_red">#C51010</color>
 

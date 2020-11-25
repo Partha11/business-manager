@@ -13,7 +13,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.databinding.ActivityDashboardBinding
 import com.supernova.bkashmanager.listener.FragmentInteractionListener
-import com.supernova.bkashmanager.listener.UpdateListener
 import com.supernova.bkashmanager.model.History
 import com.supernova.bkashmanager.model.User
 import com.supernova.bkashmanager.service.DataService
@@ -31,11 +30,6 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var viewModel: DashboardViewModel
     private lateinit var prefs: SharedPrefs
-
-    companion object {
-
-        var updateListener: UpdateListener? = null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -68,14 +62,6 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
 
         binding.bottomNavigation.setOnTabSelectedListener(this)
         binding.bottomNavigation.currentItem = 0
-
-        prefs.prefs.registerOnSharedPreferenceChangeListener { _, key ->
-
-            when (key) {
-
-                Constants.PREF_ADMIN_NAME -> updateListener?.onNameUpdated(prefs.adminName)
-            }
-        }
     }
 
     private fun loadFragment(position: Int) {

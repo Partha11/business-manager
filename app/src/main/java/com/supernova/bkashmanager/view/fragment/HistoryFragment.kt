@@ -58,6 +58,7 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
 
         (activity as AppCompatActivity).supportActionBar?.show()
         activity?.title = "Histories"
+
         setHasOptionsMenu(true)
     }
 
@@ -95,10 +96,6 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
 
     private fun showDatePickerDialog() {
 
-//        val multipleDaysPickCallback = MultipleDaysPickCallback { multipleDays ->
-//            // TODO
-//        }
-
         if (activity != null) {
 
             val themeFactory = LightThemeFactory()
@@ -111,17 +108,6 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
 
             datePicker.show(activity!!.supportFragmentManager, "date_picker")
         }
-
-//        val dialog = CustomPicker()
-//
-//        if (activity != null) {
-//
-//            dialog.isCancelable = false
-//            dialog.selectedDate = date
-//            dialog.listener = this
-//
-//            dialog.show(activity!!.supportFragmentManager, "picker")
-//        }
     }
 
     private fun fetchHistoriesByDate(date: String) {
@@ -130,6 +116,8 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
 
             adapter?.histories = it
             adapter?.notifyDataSetChanged()
+
+            binding.noTransactionFoundText.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.GONE
         })
     }
 
@@ -139,6 +127,7 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
 
             val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
             this.date = format.format(singleDay.getTime())
+
             fetchHistoriesByDate(date)
         }
     }

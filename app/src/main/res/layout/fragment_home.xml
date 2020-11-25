@@ -22,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Good Morning, "
         android:textSize="@dimen/_9ssp"
+        android:textColor="#D3D3D3"
         android:fontFamily="@font/open_sans"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_15sdp"/>
@@ -34,6 +35,7 @@
         app:layout_constraintStart_toStartOf="@id/wish_text"
         tools:text="Salahuddin BP"
         android:textSize="@dimen/_12ssp"
+        android:textColor="#D3D3D3"
         android:fontFamily="@font/open_sans"
         android:layout_marginTop="@dimen/_3sdp"/>
 

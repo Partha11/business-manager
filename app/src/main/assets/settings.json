@@ -1,0 +1,37 @@
+[
+  {
+    "id": 900,
+    "title": "Privacy & Security",
+    "content": "",
+    "is_title": true,
+    "icon": ""
+  },
+  {
+    "id": 1000,
+    "title": "Change Name",
+    "content": "Change your user name",
+    "is_title": false,
+    "icon": ""
+  },
+  {
+    "id": 1001,
+    "title": "Change Password",
+    "content": "Change your current password",
+    "is_title": false,
+    "icon": ""
+  },
+  {
+    "id": 901,
+    "title": "Points",
+    "content": "",
+    "is_title": true,
+    "icon": ""
+  },
+  {
+    "id": 1002,
+    "title": "Update Points",
+    "content": "Add/remove points from account",
+    "is_title": false,
+    "icon": ""
+  }
+]

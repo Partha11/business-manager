@@ -1,12 +1,17 @@
 package com.supernova.bkashmanager.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.supernova.bkashmanager.database.AppDatabase
 import com.supernova.bkashmanager.model.History
+import com.supernova.bkashmanager.model.SettingsItem
 import com.supernova.bkashmanager.model.User
 import com.supernova.bkashmanager.repository.DashboardRepository
 import com.supernova.bkashmanager.util.Constants
@@ -46,5 +51,35 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
     fun getHistories(date: String): LiveData<List<History>> {
 
         return repository.getHistories(if (date.isEmpty()) Utils.getCurrentDate() else date)
+    }
+
+    fun parseSettingsItems(context: Context): LiveData<List<SettingsItem>> {
+
+        val liveData = MutableLiveData<List<SettingsItem>>()
+        val settingsItems = mutableListOf<SettingsItem>()
+        val fileName = "settings.json"
+        val file: String = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        val type = object: TypeToken<List<SettingsItem>>() { }.type
+        val data: List<SettingsItem> = Gson().fromJson(file, type)
+
+        for (item in data) {
+
+            if (!item.isTitle) {
+
+                if (item.thumbIconString.isNotEmpty()) {
+
+                    val image = "@drawable/" + item.thumbIconString
+                    val resource = context.resources.getIdentifier(image, null, context.packageName)
+                    val drawable = ContextCompat.getDrawable(context, resource)
+
+                    item.thumbIcon = drawable
+                }
+            }
+
+            settingsItems.add(item)
+        }
+
+        liveData.value = settingsItems
+        return liveData
     }
 }

@@ -21,6 +21,11 @@ This application provides a way to balance between profit tracking and controlli
 - [ ] Disabling support for rooted devices for extra security
 - [ ] Reduce number of libraries used in the project
 
+## Screenshots
+
+![](home.png) ![](history.png) ![](calendar.png)
+![](no-trx.png)
+
 ## Motivation
 
 Sellers who are relatively newer to business often do not have enough money to pay for a payment gateway and an automated system for their sales. Which sometimes causes them to lose customers, as everyone wants to have rapid and fluid purchases. Also calculating profits manually can lead to miscounting issues. This application can be an all in one solution for those who are looking for a small business manager within their budget range.
