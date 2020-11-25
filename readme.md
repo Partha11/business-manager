@@ -24,8 +24,9 @@ This application provides a way to balance between profit tracking and controlli
 ## Screenshots
 
 <p>
-  <img src="/home.png" height="96" width="54" />
-  <img src="/history.png" height="96" width="54" /> 
+  <img src="/home.png" height="240" width="135" />
+  <img src="/history.png" height="240" width="135" /> 
+  <img src="/calendar.png" height="240" width="135" /> 
 </p>
 
 ## Motivation
