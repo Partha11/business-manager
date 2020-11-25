@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.LoginActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_300sdp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/view_login"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_line_h_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.20"
+        android:orientation="horizontal"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/welcome_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Welcome\nBack!"
+        android:text="@string/welcome_back"
+        android:textColor="@color/black"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/guide_line_h_20"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Email"
+        android:text="@string/email"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@id/welcome_text"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/login_email"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_30sdp"
+        android:background="@drawable/view_text_box"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/open_sans"
+        android:inputType="textEmailAddress"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/email_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:paddingStart="@dimen/_6sdp"
+        android:paddingEnd="@dimen/_6sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/password_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Password"
+        android:text="@string/password"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@id/login_email"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/login_password"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_30sdp"
+        android:background="@drawable/view_text_box"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/open_sans"
+        android:inputType="textPassword"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/password_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:paddingStart="@dimen/_6sdp"
+        android:paddingEnd="@dimen/_6sdp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/remember_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/login_password"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="@string/remember_me"
+        android:textSize="@dimen/_9ssp"
+        android:fontFamily="@font/open_sans"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_sign_in"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/remember_me"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="@string/sign_in"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_11ssp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/open_sans"
+        android:background="@drawable/bg_button"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

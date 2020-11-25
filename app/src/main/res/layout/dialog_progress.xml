@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/_8sdp"
+    android:paddingStart="@dimen/_8sdp"
+    android:paddingEnd="@dimen/_8sdp"
+    android:paddingBottom="@dimen/_8sdp"
+    android:background="@drawable/bg_dialog">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/dialog_progress_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/please_wait"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/loading_spinner"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:SpinKit_Style="RotatingCircle"
+        app:SpinKit_Color="@color/default_primary"
+        app:layout_constraintTop_toBottomOf="@id/dialog_progress_title"
+        app:layout_constraintStart_toStartOf="@id/dialog_progress_title"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/dialog_progress_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        tools:text="@string/progress_message"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/open_sans"
+        app:layout_constraintTop_toTopOf="@id/loading_spinner"
+        app:layout_constraintBottom_toBottomOf="@id/loading_spinner"
+        app:layout_constraintStart_toEndOf="@id/loading_spinner"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

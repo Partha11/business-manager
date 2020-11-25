@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="@dimen/_6sdp"
+    android:layout_marginEnd="@dimen/_6sdp"
+    android:layout_marginTop="@dimen/_3sdp"
+    android:layout_marginBottom="@dimen/_3sdp"
+    android:foreground="?selectableItemBackground"
+    app:cardCornerRadius="6dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_8sdp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Test User"
+            android:textSize="@dimen/_11ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/user_name"
+            app:layout_constraintStart_toStartOf="@id/user_name"
+            android:layout_marginTop="@dimen/_7sdp"
+            tools:text="Email: test@test.com"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/user_email"
+            app:layout_constraintStart_toStartOf="@id/user_name"
+            android:layout_marginTop="@dimen/_4sdp"
+            tools:text="Number: 017xxxxxxxx"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/user_email"
+            app:layout_constraintBottom_toBottomOf="@id/user_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Balance: 5"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/user_name"
+            app:layout_constraintBottom_toBottomOf="@id/user_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Status: Active"
+            android:textSize="@dimen/_9ssp"
+            android:fontFamily="@font/open_sans"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
