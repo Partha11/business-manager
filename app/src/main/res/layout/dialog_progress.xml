@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/_8sdp"
     android:paddingStart="@dimen/_8sdp"
     android:paddingEnd="@dimen/_8sdp"
-    android:paddingBottom="@dimen/_8sdp"
+    android:paddingBottom="@dimen/_10sdp"
     android:background="@drawable/bg_dialog">
 
     <androidx.appcompat.widget.AppCompatTextView

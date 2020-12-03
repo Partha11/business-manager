@@ -1,19 +1,33 @@
 package com.supernova.bkashmanager.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.databinding.ModelUserBinding
+import com.supernova.bkashmanager.listener.UserClickListener
 import com.supernova.bkashmanager.model.User
 
 class UserAdapter(private val context: Context?): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     var users: List<User>? = null
+    private var listener: UserClickListener? = null
+
+    init {
+
+        if (context is UserClickListener) {
+
+            listener = context
+
+        } else {
+
+            Log.d("UserListener", "Interface not implemented")
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -34,7 +48,7 @@ class UserAdapter(private val context: Context?): RecyclerView.Adapter<UserAdapt
 
             if (context != null) {
 
-                if (user.isBanned) {
+                if (user.banStatus == 1) {
 
                     holder.binding.userStatus.setTextColor(ContextCompat.getColor(context, R.color.blocked_red))
                     holder.binding.userStatus.text = context.getString(R.string.user_status, "Banned")
@@ -53,8 +67,18 @@ class UserAdapter(private val context: Context?): RecyclerView.Adapter<UserAdapt
         return users?.size ?: 0
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         val binding: ModelUserBinding = ModelUserBinding.bind(view)
+
+        init {
+
+            binding.root.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+
+            listener?.onUserClicked(users?.get(adapterPosition))
+        }
     }
 }

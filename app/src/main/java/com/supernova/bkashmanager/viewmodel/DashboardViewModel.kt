@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.supernova.bkashmanager.database.AppDatabase
+import com.supernova.bkashmanager.model.ApiResponse
 import com.supernova.bkashmanager.model.History
 import com.supernova.bkashmanager.model.SettingsItem
 import com.supernova.bkashmanager.model.User
@@ -64,7 +65,7 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
 
         for (item in data) {
 
-            if (!item.isTitle) {
+            if (item.viewType == Constants.VIEW_SECTION_ITEM) {
 
                 if (item.thumbIconString.isNotEmpty()) {
 
@@ -81,5 +82,20 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
 
         liveData.value = settingsItems
         return liveData
+    }
+
+    fun updateUser(email: String, token: String, operation: Int, userId: Int): LiveData<ApiResponse> {
+
+        return repository.updateUser(email, token, operation, userId)
+    }
+
+    fun updateHistory(email: String, token: String, id: Int, message: String?): LiveData<ApiResponse> {
+
+        return repository.updateHistory(email, token, id, message)
+    }
+
+    fun updateProfile(email: String, token: String, type: Int, text: String?, text2: String?): LiveData<ApiResponse> {
+
+        return repository.updateProfile(email, token, type, text, text2)
     }
 }

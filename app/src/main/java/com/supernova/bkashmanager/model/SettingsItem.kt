@@ -16,6 +16,6 @@ data class SettingsItem (
     var thumbIcon: Drawable?,
     @SerializedName("icon")
     var thumbIconString: String,
-    @SerializedName("is_title")
-    var isTitle: Boolean
+    @SerializedName("view_type")
+    var viewType: Int
 )

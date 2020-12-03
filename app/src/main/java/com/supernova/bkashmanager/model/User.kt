@@ -35,7 +35,7 @@ class User {
 
     @SerializedName("is_banned")
     @ColumnInfo(name = Constants.TABLE_USER_STATUS)
-    var isBanned: Boolean = false
+    var banStatus: Int = 0
 
     @SerializedName("initial_points")
     @Ignore

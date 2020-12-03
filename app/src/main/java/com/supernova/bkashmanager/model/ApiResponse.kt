@@ -19,6 +19,9 @@ class ApiResponse {
     @SerializedName("user")
     var user: User? = null
 
+    @SerializedName("history")
+    var history: History? = null
+
     @SerializedName("users")
     var users: List<User>? = null
 

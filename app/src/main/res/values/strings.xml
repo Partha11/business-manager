@@ -16,12 +16,16 @@
     <string name="invalid_email">Invalid email format. Please check your email and try again.</string>
     <string name="something_went_wrong">Something went wrong. Please try again. If the issue persists, please contact with the developer.</string>
     <string name="authenticating">Authenticating user information..</string>
+    <string name="communicating">Communicating with server..</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="home">Home</string>
     <string name="history">History</string>
     <string name="settings">Settings</string>
+
+    <string name="ban">Block</string>
+    <string name="unban">Unblock</string>
 
     <string name="manager_name">Manager: %1$s</string>
     <string name="initial_points">Initial Points: %1$d</string>
@@ -43,4 +47,27 @@
     <string name="select_date">Select Date</string>
     <string name="pick_date">Pick Date</string>
     <string name="no_transactions_found">No Transactions Found!</string>
+
+    <string name="warning">Warning</string>
+    <string name="ban_warning">Are you sure you want to %1$s this user?</string>
+    <string name="history_processed">This history has already been processed</string>
+    <string name="user_status_updated">User status updated</string>
+    <string name="transaction_status_updated">Transaction status updated</string>
+    <string name="profile_updated">Admin profile updated</string>
+    <string name="message">Message</string>
+    <string name="message_for_user">Message for user</string>
+    <string name="update_name">Update Name</string>
+    <string name="user_name">User Name</string>
+    <string name="update_password">Update Password</string>
+    <string name="new_password">New Password</string>
+    <string name="current_password">Current Password</string>
+
+    <string-array name="user_operation">
+        <item>%1 User</item>
+        <item>Modify Points</item>
+    </string-array>
+
+    <string-array name="history_operation">
+        <item>Process History</item>
+    </string-array>
 </resources>

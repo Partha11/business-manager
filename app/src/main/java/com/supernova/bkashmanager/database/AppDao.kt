@@ -1,10 +1,7 @@
 package com.supernova.bkashmanager.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.supernova.bkashmanager.model.History
 import com.supernova.bkashmanager.model.User
 import com.supernova.bkashmanager.util.Constants
@@ -17,6 +14,12 @@ interface AppDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertHistories(users: List<History>)
+
+    @Update
+    fun updateUser(user: User)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateHistory(history: History)
 
     @Query("SELECT * FROM ${Constants.TABLE_USERS}")
     fun getUsers(): LiveData<List<User>>

@@ -14,6 +14,7 @@ import com.supernova.bkashmanager.util.Utils
 class HistoryAdapter(private val context: Context?): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     var histories: List<History>? = null
+    var listener: OnClickListener? = if (context is OnClickListener) context else null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -58,8 +59,23 @@ class HistoryAdapter(private val context: Context?): RecyclerView.Adapter<Histor
         return histories?.size ?: 0
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         val binding: ModelHistoryBinding = ModelHistoryBinding.bind(view)
+
+        init {
+
+            binding.root.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+
+            listener?.onClick(histories?.get(adapterPosition))
+        }
+    }
+
+    public interface OnClickListener {
+
+        fun onClick(history: History?)
     }
 }

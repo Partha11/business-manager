@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HistoryFragment : Fragment(), SingleDayPickCallback {
+class HistoryFragment(private val historyListener: HistoryAdapter.OnClickListener) : Fragment(), SingleDayPickCallback {
 
     private lateinit var binding: FragmentHistoryBinding
 
@@ -32,7 +32,7 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
     companion object {
 
         @JvmStatic
-        fun getInstance() = HistoryFragment()
+        fun getInstance(listener: HistoryAdapter.OnClickListener) = HistoryFragment(listener)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -88,6 +88,7 @@ class HistoryFragment : Fragment(), SingleDayPickCallback {
     private fun setupRecyclerView() {
 
         adapter = HistoryAdapter(context)
+        adapter?.listener = historyListener
 
         binding.historyRecycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.historyRecycler.itemAnimator = DefaultItemAnimator()

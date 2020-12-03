@@ -1,8 +1,8 @@
 package com.supernova.bkashmanager.listener
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import com.supernova.bkashmanager.model.History
+import com.supernova.bkashmanager.model.SettingsItem
 import com.supernova.bkashmanager.model.User
 
 interface FragmentInteractionListener {
@@ -14,4 +14,5 @@ interface FragmentInteractionListener {
     fun getStorageListener(): LiveData<Pair<String, String>>
     fun getUsers(): LiveData<List<User>>
     fun getHistories(date: String): LiveData<List<History>>
+    fun getItems(): LiveData<List<SettingsItem>>
 }

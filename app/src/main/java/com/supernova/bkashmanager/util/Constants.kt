@@ -46,7 +46,27 @@ object Constants {
     const val DATA_USER_TOKEN = "user_token"
     const val DATA_USER_EMAIL = "user_email"
 
+    const val DIALOG_TYPE_TEXT = 0
+    const val DIALOG_TYPE_PASSWORD = 1
+    const val DIALOG_TYPE_NUMBER = 2
+
+    const val TYPE_NAME = 0
+    const val TYPE_PASSWORD = 1
+    const val TYPE_POINTS = 2
+
     const val JOB_FETCH_PROFILE = 100
     const val JOB_FETCH_USERS = 101
     const val JOB_FETCH_HISTORIES = 102
+
+    const val SETTINGS_ITEM_BASE = 1000
+    const val SETTINGS_ITEM_NAME = 1000
+    const val SETTINGS_ITEM_PASSWORD = 1001
+
+    const val VIEW_SECTION_TITLE = 1
+    const val VIEW_SECTION_ITEM = 2
+
+    const val USER_BLOCK = 0
+
+    const val LIST_TYPE_USER = 1
+    const val LIST_TYPE_HISTORY = 2
 }
