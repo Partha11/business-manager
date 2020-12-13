@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1018861778092",
+    "project_id": "bkash-manager",
+    "storage_bucket": "bkash-manager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018861778092:android:0d5774cb2726e968b55b09",
+        "android_client_info": {
+          "package_name": "com.supernova.bkashmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018861778092-svtu273gvjl9re8fp70sg0jqhh3at173.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8AvM5jnyoxm3R6kzISrVuP_LwOALpG9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018861778092-svtu273gvjl9re8fp70sg0jqhh3at173.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

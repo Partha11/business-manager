@@ -61,4 +61,12 @@ interface ApiInterface {
             @Field("new_password") newPassword: String? = "",
             @Field("wallet_points") points: Int = 0
     ): Call<ApiResponse?>?
+
+    @POST("users.php")
+    @FormUrlEncoded
+    fun addNewUser(
+        @Field("admin_email") email: String?,
+        @Field("admin_token") token: String?,
+        @Field("serialized_user") serializedUser: String
+    ): Call<ApiResponse?>?
 }

@@ -75,6 +75,18 @@
             app:layout_constraintStart_toStartOf="@id/transaction_amount"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transaction_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10ssp"
+            tools:text="Message: Last Number 90"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"
+            app:layout_constraintTop_toTopOf="@id/phone_number"
+            app:layout_constraintBottom_toBottomOf="@id/phone_number"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/request_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

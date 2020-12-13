@@ -14,7 +14,7 @@ object Constants {
     const val PREF_CURRENT_POINTS = "current_points"
 
     const val DATABASE_NAME = BuildConfig.APPLICATION_ID + ".userdb"
-    const val DATABASE_VERSION = 1
+    const val DATABASE_VERSION = 2
 
     const val TABLE_USERS = "users"
     const val TABLE_USER_ID = "id"
@@ -33,6 +33,7 @@ object Constants {
     const val TABLE_HISTORY_TRX_TYPE_TEXT = "trx_type_text"
     const val TABLE_HISTORY_TRX_MEDIUM = "trx_medium"
     const val TABLE_HISTORY_TRX_MEDIUM_TEXT = "trx_medium_text"
+    const val TABLE_HISTORY_TRX_MESSAGE = "trx_message"
     const val TABLE_HISTORY_USER_ID = "user_id"
     const val TABLE_HISTORY_IS_COMPLETED = "is_completed"
     const val TABLE_HISTORY_REQUEST_TIME = "request_time"
@@ -54,6 +55,12 @@ object Constants {
     const val TYPE_PASSWORD = 1
     const val TYPE_POINTS = 2
 
+    const val TYPE_USER_STATUS = 0
+    const val TYPE_USER_POINTS = 1
+
+    const val INVALID_POINT = -1
+    const val INVALID_USER_ID = 0
+
     const val JOB_FETCH_PROFILE = 100
     const val JOB_FETCH_USERS = 101
     const val JOB_FETCH_HISTORIES = 102
@@ -61,6 +68,8 @@ object Constants {
     const val SETTINGS_ITEM_BASE = 1000
     const val SETTINGS_ITEM_NAME = 1000
     const val SETTINGS_ITEM_PASSWORD = 1001
+    const val SETTINGS_ITEM_POINTS = 1002
+    const val SETTINGS_ITEM_NEW_USER = 1003
 
     const val VIEW_SECTION_TITLE = 1
     const val VIEW_SECTION_ITEM = 2
@@ -69,4 +78,11 @@ object Constants {
 
     const val LIST_TYPE_USER = 1
     const val LIST_TYPE_HISTORY = 2
+
+    const val NOTIFICATION_TITLE = "title"
+    const val NOTIFICATION_MESSAGE = "content"
+
+    const val NOTIFICATION_TYPE_BASIC = 500
+    const val NOTIFICATION_CHANNEL = BuildConfig.APPLICATION_ID
+    const val NOTIFICATION_CHANNEL_NAME = "bkash"
 }

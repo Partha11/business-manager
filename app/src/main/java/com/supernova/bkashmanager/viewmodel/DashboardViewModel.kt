@@ -11,9 +11,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.supernova.bkashmanager.database.AppDatabase
 import com.supernova.bkashmanager.model.ApiResponse
-import com.supernova.bkashmanager.model.History
 import com.supernova.bkashmanager.model.SettingsItem
 import com.supernova.bkashmanager.model.User
+import com.supernova.bkashmanager.model.UserHistory
 import com.supernova.bkashmanager.repository.DashboardRepository
 import com.supernova.bkashmanager.util.Constants
 import com.supernova.bkashmanager.util.SharedPrefs
@@ -49,7 +49,12 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         return repository.getUsers()
     }
 
-    fun getHistories(date: String): LiveData<List<History>> {
+    fun getUser(id: Int): LiveData<User> {
+
+        return repository.getUser(id)
+    }
+
+    fun getHistories(date: String): LiveData<List<UserHistory>> {
 
         return repository.getHistories(if (date.isEmpty()) Utils.getCurrentDate() else date)
     }
@@ -84,9 +89,23 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         return liveData
     }
 
-    fun updateUser(email: String, token: String, operation: Int, userId: Int): LiveData<ApiResponse> {
+    fun updateUser(email: String, token: String, operation: Int, userId: Int, points: String? = ""): LiveData<ApiResponse> {
 
-        return repository.updateUser(email, token, operation, userId)
+        var pointInt = -1
+
+        try {
+
+            if (points != null) {
+
+                pointInt = points.toInt()
+            }
+
+        } catch (ex: Exception) {
+
+            ex.printStackTrace()
+        }
+
+        return repository.updateUser(email, token, operation, userId, pointInt)
     }
 
     fun updateHistory(email: String, token: String, id: Int, message: String?): LiveData<ApiResponse> {
@@ -97,5 +116,10 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
     fun updateProfile(email: String, token: String, type: Int, text: String?, text2: String?): LiveData<ApiResponse> {
 
         return repository.updateProfile(email, token, type, text, text2)
+    }
+
+    fun addNewUser(email: String, token: String, user: User): LiveData<ApiResponse> {
+
+        return repository.addNewUser(email, token, Gson().toJson(user))
     }
 }

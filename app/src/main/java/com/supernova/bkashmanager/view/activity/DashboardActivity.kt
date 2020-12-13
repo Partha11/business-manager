@@ -11,20 +11,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
+import com.google.firebase.messaging.FirebaseMessaging
 import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.adapter.HistoryAdapter
 import com.supernova.bkashmanager.adapter.SettingsAdapter
 import com.supernova.bkashmanager.databinding.ActivityDashboardBinding
-import com.supernova.bkashmanager.dialog.CustomDialog
-import com.supernova.bkashmanager.dialog.CustomInputDialog
-import com.supernova.bkashmanager.dialog.CustomListDialog
-import com.supernova.bkashmanager.dialog.CustomProgress
+import com.supernova.bkashmanager.dialog.*
 import com.supernova.bkashmanager.listener.DialogInteractionListener
 import com.supernova.bkashmanager.listener.FragmentInteractionListener
 import com.supernova.bkashmanager.listener.UserClickListener
 import com.supernova.bkashmanager.model.History
 import com.supernova.bkashmanager.model.SettingsItem
 import com.supernova.bkashmanager.model.User
+import com.supernova.bkashmanager.model.UserHistory
 import com.supernova.bkashmanager.service.DataService
 import com.supernova.bkashmanager.service.HistoryService
 import com.supernova.bkashmanager.service.UserService
@@ -38,7 +37,8 @@ import java.util.*
 
 
 class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedListener, FragmentInteractionListener,
-        SettingsAdapter.OnClickListener, UserClickListener, CustomListDialog.ListItemClickListener, HistoryAdapter.OnClickListener, CustomInputDialog.InputListener {
+    SettingsAdapter.OnClickListener, UserClickListener, CustomListDialog.ListItemClickListener, HistoryAdapter.OnClickListener,
+    CustomInputDialog.InputListener, CustomUserDialog.OnCreateListener {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var viewModel: DashboardViewModel
@@ -49,7 +49,11 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
 
     private lateinit var listDialog: CustomListDialog
 
+    private var doubleBackPressed: Boolean = false
+
     private var banText: String = ""
+    private var userId: Int = 0
+    private var userPoints: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -61,6 +65,12 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
         initialize()
     }
 
+    override fun onStart() {
+
+        super.onStart()
+        FirebaseMessaging.getInstance().subscribeToTopic("bkash_manager")
+    }
+
     override fun onResume() {
 
         super.onResume()
@@ -68,6 +78,21 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
         startProfileService()
         startUserService()
         startHistoryService()
+    }
+
+    override fun onBackPressed() {
+
+        if (doubleBackPressed) {
+
+            super.onBackPressed()
+
+        } else {
+
+            doubleBackPressed = true
+
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
+            Handler(Looper.getMainLooper()).postDelayed({ doubleBackPressed = false }, 1500)
+        }
     }
 
     private fun initialize() {
@@ -114,7 +139,7 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
 
                 DataService.enqueueWork(this, Constants.JOB_FETCH_PROFILE, service)
 
-            }, 2000)
+            }, 500)
         }
     }
 
@@ -207,7 +232,7 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
         return viewModel.getUsers()
     }
 
-    override fun getHistories(date: String): LiveData<List<History>> {
+    override fun getHistories(date: String): LiveData<List<UserHistory>> {
 
         return viewModel.getHistories(date)
     }
@@ -244,7 +269,7 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
             listDialog.dismiss()
         }
 
-        if (position == 0) {
+        if (position == Constants.TYPE_USER_STATUS) {
 
             showCustomDialog(getString(R.string.warning), getString(R.string.ban_warning, banText.toLowerCase(Locale.ROOT)), true, object: DialogInteractionListener {
 
@@ -270,6 +295,17 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
                     })
                 }
             })
+
+        } else if (position == Constants.TYPE_USER_POINTS) {
+
+            if (user != null) {
+
+                val points = user.currentPoints
+                userId = user.userId
+                userPoints = points
+
+                showInputDialog(getString(R.string.update_points), points.toString(), getString(R.string.total_points), Constants.TYPE_USER_POINTS, Constants.DIALOG_TYPE_NUMBER, this)
+            }
         }
     }
 
@@ -315,9 +351,11 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
         showInputDialog("", "", "", 0, Constants.DIALOG_TYPE_TEXT, listener)
     }
 
-    override fun onClick(history: History?) {
+    override fun onClick(item: UserHistory?) {
 
-        if (history != null) {
+        if (item != null) {
+
+            val history = item.history ?: return
 
             if (history.completionFlag == 1) {
 
@@ -343,14 +381,143 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
 
             Constants.SETTINGS_ITEM_NAME -> showInputDialog(getString(R.string.update_name), prefs.adminName, getString(R.string.user_name), id, Constants.DIALOG_TYPE_TEXT, this)
             Constants.SETTINGS_ITEM_PASSWORD -> showInputDialog(getString(R.string.update_password), "", getString(R.string.current_password), id, Constants.DIALOG_TYPE_PASSWORD, this)
+            Constants.SETTINGS_ITEM_POINTS -> showInputDialog(getString(R.string.update_points), prefs.initialPoints.toString(), getString(R.string.total_points), id, Constants.DIALOG_TYPE_NUMBER, this)
+            Constants.SETTINGS_ITEM_NEW_USER -> {
+
+                val userDialog = CustomUserDialog()
+
+                userDialog.listener = this
+                userDialog.isCancelable = false
+
+                userDialog.show(supportFragmentManager, "user")
+            }
         }
     }
 
     override fun onInput(id: Int, text: String?, text2: String?) {
 
         val progress = showCustomProgress(getString(R.string.please_wait), getString(R.string.communicating))
+        val type = if (id >= Constants.SETTINGS_ITEM_BASE) id - Constants.SETTINGS_ITEM_BASE else id
 
-        viewModel.updateProfile(prefs.adminEmail, prefs.adminToken, id - Constants.SETTINGS_ITEM_BASE, text, text2).observe(this, {
+        if (id >= Constants.SETTINGS_ITEM_BASE) {
+
+            viewModel.updateProfile(prefs.adminEmail, prefs.adminToken, type, text, text2).observe(this, {
+
+                if (it != null) {
+
+                    progress.dismiss()
+
+                    if (it.status == Constants.STATUS_SUCCESS) {
+
+                        val user = it.user
+
+                        if (user != null) {
+
+                            prefs.adminName = it.user?.userName ?: ""
+                            prefs.currentPoints = it.user?.currentPoints ?: 0
+                            prefs.initialPoints = it.user?.initialPoints ?: 0
+                        }
+
+                        Toast.makeText(this@DashboardActivity, getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        showCustomDialog(getString(R.string.error), it.failReason ?: "")
+                    }
+
+                } else {
+
+                    progress.dismiss()
+                    showCustomDialog(getString(R.string.error), getString(R.string.something_went_wrong))
+                }
+            })
+
+        } else {
+
+            if (userId == Constants.INVALID_USER_ID) {
+
+                progress.dismiss()
+                showCustomDialog(getString(R.string.error), getString(R.string.something_went_wrong))
+
+            } else {
+
+                var number = -2
+
+                try {
+
+                    if (text != null) {
+
+                        number = text.toInt()
+                    }
+
+                } catch (ex: Exception) {
+
+                    ex.printStackTrace()
+                }
+
+                if (number != -2) {
+
+                    val diff = number - userPoints
+                    val curr = prefs.currentPoints
+
+                    if (curr - diff < 0 || curr - diff > prefs.initialPoints) {
+
+                        progress.dismiss()
+                        showCustomDialog(getString(R.string.error), getString(R.string.point_error))
+
+                    } else {
+
+                        viewModel.updateUser(prefs.adminEmail, prefs.adminToken, type, userId, text).observe(this, {
+
+                            if (it != null) {
+
+                                progress.dismiss()
+
+                                if (it.status == Constants.STATUS_SUCCESS) {
+
+                                    val user = it.user
+
+                                    if (user != null) {
+
+                                        val rem = user.currentPoints - userPoints
+                                        prefs.currentPoints -= rem
+                                    }
+
+                                    userPoints = 0
+                                    userId = Constants.INVALID_USER_ID
+
+                                    Toast.makeText(this@DashboardActivity, getString(R.string.user_points_updated), Toast.LENGTH_SHORT).show()
+
+                                } else {
+
+                                    userId = Constants.INVALID_USER_ID
+                                    showCustomDialog(getString(R.string.error), it.failReason ?: "")
+                                }
+
+                            } else {
+
+                                progress.dismiss()
+                                showCustomDialog(getString(R.string.error), getString(R.string.something_went_wrong))
+
+                                userId = Constants.INVALID_USER_ID
+                            }
+                        })
+                    }
+
+                } else {
+
+                    progress.dismiss()
+                    showCustomDialog(getString(R.string.error), getString(R.string.point_error))
+                }
+            }
+        }
+    }
+
+    override fun onNewUserCreated(user: User) {
+
+        val progress = showCustomProgress(getString(R.string.please_wait), getString(R.string.communicating))
+
+        viewModel.addNewUser(prefs.adminEmail, prefs.adminToken, user).observe(this, {
 
             if (it != null) {
 
@@ -358,16 +525,7 @@ class DashboardActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedL
 
                 if (it.status == Constants.STATUS_SUCCESS) {
 
-                    val user = it.user
-
-                    if (user != null) {
-
-                        prefs.adminName = it.user?.userName ?: ""
-                        prefs.currentPoints = it.user?.currentPoints ?: 0
-                        prefs.initialPoints = it.user?.initialPoints ?: 0
-                    }
-
-                    Toast.makeText(this@DashboardActivity, getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DashboardActivity, getString(R.string.user_created), Toast.LENGTH_SHORT).show()
 
                 } else {
 

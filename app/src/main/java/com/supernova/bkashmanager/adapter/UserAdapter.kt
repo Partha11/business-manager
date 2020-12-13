@@ -11,6 +11,7 @@ import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.databinding.ModelUserBinding
 import com.supernova.bkashmanager.listener.UserClickListener
 import com.supernova.bkashmanager.model.User
+import com.supernova.bkashmanager.util.Utils
 
 class UserAdapter(private val context: Context?): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
@@ -41,7 +42,7 @@ class UserAdapter(private val context: Context?): RecyclerView.Adapter<UserAdapt
 
         if (user != null) {
 
-            holder.binding.userName.text = user.userName
+            holder.binding.userName.text = Utils.capitalizeName(user.userName)
             holder.binding.userEmail.text = context?.getString(R.string.user_email, user.userEmail)
             holder.binding.userNumber.text = context?.getString(R.string.user_number, user.userNumber)
             holder.binding.userBalance.text = context?.getString(R.string.user_balance, user.currentPoints)

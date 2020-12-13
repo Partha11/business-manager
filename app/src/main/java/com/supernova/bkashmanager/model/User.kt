@@ -29,6 +29,10 @@ class User {
     @Ignore
     var userToken: String? = ""
 
+    @SerializedName("user_password")
+    @Ignore
+    var userPassword: String? = ""
+
     @SerializedName("user_number")
     @ColumnInfo(name = Constants.TABLE_USER_NUMBER)
     var userNumber: String? = ""

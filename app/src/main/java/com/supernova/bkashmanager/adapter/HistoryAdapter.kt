@@ -8,12 +8,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.supernova.bkashmanager.R
 import com.supernova.bkashmanager.databinding.ModelHistoryBinding
-import com.supernova.bkashmanager.model.History
+import com.supernova.bkashmanager.model.UserHistory
 import com.supernova.bkashmanager.util.Utils
 
 class HistoryAdapter(private val context: Context?): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
-    var histories: List<History>? = null
+    var histories: List<UserHistory>? = null
     var listener: OnClickListener? = if (context is OnClickListener) context else null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,14 +24,17 @@ class HistoryAdapter(private val context: Context?): RecyclerView.Adapter<Histor
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val history = histories?.get(position)
+        val item = histories?.get(position)
 
-        if (history != null) {
+        if (item != null) {
+
+            val history = item.history ?: return
 
             val type = if (history.transactionMedium != -1) "${history.transactionMediumText} (${history.transactionTypeText})" else history.transactionTypeText
 
-            holder.binding.historyId.text = context?.getString(R.string.request_no, history.id)
+            holder.binding.historyId.text = context?.getString(R.string.request_from, Utils.capitalizeName(item.user?.userName))
             holder.binding.phoneNumber.text = context?.getString(R.string.user_number, history.phoneNumber)
+            holder.binding.transactionMessage.text = context?.getString(R.string.trx_message, history.transactionMessage)
             holder.binding.transactionAmount.text = context?.getString(R.string.trx_amount, history.transactionAmount)
             holder.binding.transactionType.text = context?.getString(R.string.trx_type, type)
             holder.binding.requestTime.text = context?.getString(R.string.request_time, Utils.getLocalTimeFromServerTime(history.requestTime ?: ""))
@@ -74,8 +77,8 @@ class HistoryAdapter(private val context: Context?): RecyclerView.Adapter<Histor
         }
     }
 
-    public interface OnClickListener {
+    interface OnClickListener {
 
-        fun onClick(history: History?)
+        fun onClick(item: UserHistory?)
     }
 }

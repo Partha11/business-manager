@@ -15,6 +15,7 @@
 
     <string name="invalid_email">Invalid email format. Please check your email and try again.</string>
     <string name="something_went_wrong">Something went wrong. Please try again. If the issue persists, please contact with the developer.</string>
+    <string name="point_error">Point amount can not exceed the total point of admin or be negative. Please recheck your points. If the issue persists, contact with the developer.</string>
     <string name="authenticating">Authenticating user information..</string>
     <string name="communicating">Communicating with server..</string>
 
@@ -38,8 +39,10 @@
     <string name="user_number">Number: %1$s</string>
     <string name="user_balance">Balance: %1$d</string>
     <string name="user_status">Status: %1$s</string>
+    <string name="trx_message">Message: %1$s</string>
 
     <string name="request_no">Request: #%1$d</string>
+    <string name="request_from">Request From: %1$s</string>
     <string name="request_time">Requested At: %1$s</string>
     <string name="completion_time">Completed At: %1$s</string>
     <string name="trx_amount">Amount: %1$d</string>
@@ -52,15 +55,24 @@
     <string name="ban_warning">Are you sure you want to %1$s this user?</string>
     <string name="history_processed">This history has already been processed</string>
     <string name="user_status_updated">User status updated</string>
+    <string name="user_points_updated">User points updated</string>
     <string name="transaction_status_updated">Transaction status updated</string>
     <string name="profile_updated">Admin profile updated</string>
+    <string name="user_created">New user has been added to database</string>
     <string name="message">Message</string>
     <string name="message_for_user">Message for user</string>
     <string name="update_name">Update Name</string>
     <string name="user_name">User Name</string>
+    <string name="user_email_2">User Email</string>
+    <string name="user_password">User Password</string>
+    <string name="user_number_2">User Number</string>
     <string name="update_password">Update Password</string>
+    <string name="update_points">Update Points</string>
     <string name="new_password">New Password</string>
     <string name="current_password">Current Password</string>
+    <string name="total_points">Total Points</string>
+    <string name="add_new_user">Add New User</string>
+    <string name="channel_description">Transaction notification</string>
 
     <string-array name="user_operation">
         <item>%1 User</item>

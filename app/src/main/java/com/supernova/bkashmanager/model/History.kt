@@ -40,6 +40,10 @@ class History {
     @SerializedName("transaction_medium_text")
     var transactionMediumText : String? = ""
 
+    @ColumnInfo(name = Constants.TABLE_HISTORY_TRX_MESSAGE)
+    @SerializedName("trx_message")
+    var transactionMessage : String? = ""
+
     @ColumnInfo(name = Constants.TABLE_HISTORY_USER_ID)
     @SerializedName("user_id")
     var userId : Int = 0

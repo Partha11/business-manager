@@ -79,5 +79,44 @@ class Utils {
 
             return "$number"
         }
+
+        @JvmStatic
+        fun isBangla(str: String): Boolean {
+
+            for (c in str.toCharArray()) {
+
+                if (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.BENGALI) {
+
+                    return true
+                }
+            }
+
+            return false
+        }
+
+        @JvmStatic
+        fun capitalizeName(name: String?): String {
+
+            if (name == null) {
+
+                return ""
+
+            } else if (isBangla(name)) {
+
+                return name
+            }
+
+            val arr = name.split(" ")
+            val str = StringBuilder()
+
+            for (a in arr) {
+
+                str.append(a[0].toUpperCase())
+                str.append(a.substring(1))
+                str.append(" ")
+            }
+
+            return str.toString().trim()
+        }
     }
 }

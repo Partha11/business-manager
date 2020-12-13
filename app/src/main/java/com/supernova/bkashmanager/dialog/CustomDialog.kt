@@ -20,7 +20,7 @@ class CustomDialog : DialogFragment(), View.OnClickListener {
     var isConfirmVisible = false
     var listener: DialogInteractionListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DialogCustomBinding.inflate(inflater)
         return binding.root

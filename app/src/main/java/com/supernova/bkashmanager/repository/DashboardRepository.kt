@@ -1,11 +1,13 @@
 package com.supernova.bkashmanager.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.supernova.bkashmanager.database.AppDao
 import com.supernova.bkashmanager.model.ApiResponse
-import com.supernova.bkashmanager.model.History
 import com.supernova.bkashmanager.model.User
+import com.supernova.bkashmanager.model.UserHistory
 import com.supernova.bkashmanager.service.ApiClient
 import com.supernova.bkashmanager.service.ApiInterface
 import com.supernova.bkashmanager.util.Constants
@@ -41,48 +43,65 @@ class DashboardRepository(private val dao: AppDao) {
         return dao.getUsers()
     }
 
-    fun getHistories(date: String): LiveData<List<History>> {
+    fun getUser(id: Int): LiveData<User> {
+
+        return dao.getUser(id)
+    }
+
+    fun getHistories(date: String): LiveData<List<UserHistory>> {
 
         return dao.getHistories(date)
     }
 
-    fun updateUser(email: String, token: String, operation: Int, userId: Int): LiveData<ApiResponse> {
+    fun updateUser(email: String, token: String, operation: Int, userId: Int, points: Int): LiveData<ApiResponse> {
 
         val callback = MutableLiveData<ApiResponse>()
-        val call = apiInterface.updateUser(email, token, operation, userId)
+        val call = apiInterface.updateUser(email, token, operation, userId, points)
 
-        call?.enqueue(object: Callback<ApiResponse?> {
+        if (operation == Constants.TYPE_USER_POINTS && points == Constants.INVALID_POINT) {
 
-            override fun onResponse(call: Call<ApiResponse?>, response: Response<ApiResponse?>) {
+            val response = ApiResponse()
 
-                val body = response.body()
+            response.status = "failed"
+            response.failReason = "Invalid point amount set. Please check point amount and try again."
 
-                if (body != null && body.status == Constants.STATUS_SUCCESS) {
+            callback.value = response
 
-                    val user = body.user
+        } else {
 
-                    GlobalScope.launch {
+            call?.enqueue(object: Callback<ApiResponse?> {
 
-                        if (user != null) {
+                override fun onResponse(call: Call<ApiResponse?>, response: Response<ApiResponse?>) {
 
-                            dao.updateUser(user)
+                    val body = response.body()
+
+                    if (body != null && body.status == Constants.STATUS_SUCCESS) {
+
+                        val user = body.user
+
+                        GlobalScope.launch {
+
+                            if (user != null) {
+
+                                dao.updateUser(user)
+                            }
                         }
                     }
+
+                    callback.value = body
                 }
 
-                callback.value = body
-            }
+                override fun onFailure(call: Call<ApiResponse?>, t: Throwable) {
 
-            override fun onFailure(call: Call<ApiResponse?>, t: Throwable) {
+                    val response = ApiResponse()
 
-                val response = ApiResponse()
+                    response.status = "failed"
+                    response.failReason = t.message.toString()
 
-                response.status = "failed"
-                response.failReason = t.message.toString()
-
-                callback.value = response
-            }
-        })
+                    callback.value = response
+                }
+            })
+        }
 
         return callback
     }
@@ -181,6 +200,48 @@ class DashboardRepository(private val dao: AppDao) {
                 }
             })
         }
+
+        return callback
+    }
+
+    fun addNewUser(email: String, token: String, serializedUser: String): LiveData<ApiResponse> {
+
+        val callback = MutableLiveData<ApiResponse>()
+        val call = apiInterface.addNewUser(email, token, serializedUser)
+
+        call?.enqueue(object: Callback<ApiResponse?> {
+
+            override fun onResponse(call: Call<ApiResponse?>, response: Response<ApiResponse?>) {
+
+                val body = response.body()
+                Log.d("Resp", Gson().toJson(body))
+
+                if (body != null && body.status == Constants.STATUS_SUCCESS) {
+
+                    val user = body.user
+
+                    GlobalScope.launch {
+
+                        if (user != null) {
+
+                            dao.insertUser(user)
+                        }
+                    }
+                }
+
+                callback.value = body
+            }
+
+            override fun onFailure(call: Call<ApiResponse?>, t: Throwable) {
+
+                val response = ApiResponse()
+
+                response.status = "failed"
+                response.failReason = t.message.toString()
+
+                callback.value = response
+            }
+        })
 
         return callback
     }

@@ -45,9 +45,6 @@ class CustomInputDialog : DialogFragment(), View.OnClickListener {
         window?.setLayout((width * 0.90).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
         window?.setGravity(Gravity.CENTER_HORIZONTAL)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    private fun initialize() {
 
         if (!dialogTitle.isNullOrEmpty()) {
 
@@ -56,9 +53,6 @@ class CustomInputDialog : DialogFragment(), View.OnClickListener {
 
         binding.dialogInputTextBox.setText(dialogContent)
         binding.dialogInputTextBox.hint = textHint
-
-        binding.confirmButton.setOnClickListener(this)
-        binding.cancelButton.setOnClickListener(this)
 
         when (dialogType) {
 
@@ -69,7 +63,7 @@ class CustomInputDialog : DialogFragment(), View.OnClickListener {
 
             Constants.DIALOG_TYPE_NUMBER -> {
 
-                binding.dialogInputTextBox.inputType = InputType.TYPE_NUMBER_FLAG_SIGNED
+                binding.dialogInputTextBox.inputType = InputType.TYPE_CLASS_NUMBER
             }
 
             Constants.DIALOG_TYPE_PASSWORD -> {
@@ -82,25 +76,20 @@ class CustomInputDialog : DialogFragment(), View.OnClickListener {
         }
     }
 
+    private fun initialize() {
+
+        binding.confirmButton.setOnClickListener(this)
+        binding.cancelButton.setOnClickListener(this)
+    }
+
     override fun onClick(v: View?) {
 
         when (v?.id) {
 
-            R.id.confirm_button -> {
-
-                listener?.onInput(dialogId, binding.dialogInputTextBox.text.toString(), binding.dialogInputTextBox2.text.toString())
-                binding.dialogInputTextBox.setText("")
-                binding.dialogInputTextBox2.setText("")
-                dismiss()
-            }
-
-            R.id.cancel_button -> {
-
-                binding.dialogInputTextBox.setText("")
-                binding.dialogInputTextBox2.setText("")
-                dismiss()
-            }
+            R.id.confirm_button -> listener?.onInput(dialogId, binding.dialogInputTextBox.text.toString(), binding.dialogInputTextBox2.text.toString())
         }
+
+        this.dismiss()
     }
 
     interface InputListener {
